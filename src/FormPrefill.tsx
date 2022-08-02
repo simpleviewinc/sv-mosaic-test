@@ -10,7 +10,8 @@ export default function Form() {
     console.log("called");
     return {
       foo: "Foo Value",
-      date_at: new Date(2020, 1, 1)
+      date_at: new Date(2020, 1, 1),
+      chip: "v2"
     };
   }, []);
 

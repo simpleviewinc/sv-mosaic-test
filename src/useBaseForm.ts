@@ -17,6 +17,28 @@ export default function useBaseForm(): FormProps {
       name: "date_at",
       label: "Date",
       type: "date"
+    },
+    {
+      name: "coords",
+      label: "Coords",
+      type: "mapCoordinates"
+    },
+    {
+      name: "chip",
+      label: "Chip",
+      type: "chip",
+      inputSettings: {
+        options: [
+          {
+            label: "Row 1",
+            value: "v1"
+          },
+          {
+            label: "Row 2",
+            value: "v2"
+          }
+        ]
+      }
     }
   ];
 
