@@ -5,9 +5,9 @@ function onSubmit(data) {
 }
 
 export default function useBaseForm(): FormProps {
-  const { state, dispatch, registerFields, registerOnSubmit } = useForm();
+  const { state, dispatch } = useForm();
 
-  const fields = [
+  const fields: FormProps["fields"] = [
     {
       name: "foo",
       label: "Foo",
@@ -42,13 +42,21 @@ export default function useBaseForm(): FormProps {
     }
   ];
 
-  registerFields(fields);
-  registerOnSubmit(onSubmit);
+  const buttons: FormProps["buttons"] = [
+    {
+      name: "submit",
+      label: "Save",
+      onClick: onSubmit,
+      color: "yellow",
+      variant: "contained"
+    }
+  ];
 
   return {
     title: "Form Title",
     state,
     dispatch,
-    fields
+    fields,
+    buttons
   };
 }
