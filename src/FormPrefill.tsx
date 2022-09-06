@@ -10,8 +10,30 @@ export default function Form() {
     console.log("called");
     return {
       foo: "Foo Value",
+      textArea: "Bar value",
+      number: 10,
       date_at: new Date(2020, 1, 1),
-      chip: "v2"
+      coords: {
+        lat: 32.22937555988414,
+        lng: -110.94819886474133
+      },
+      addresses: [
+        {
+          address1: "Street Name",
+          address2: "S Avenue",
+          address3: "E Street",
+          city: "Los Angeles",
+          state: "CA",
+          postalCode: 12345,
+          country: "US",
+          types: ["physical", "billing", "shipping"]
+        }
+      ],
+      chip: "v2",
+      dropdown: "d2",
+      toggleSwitch: true,
+      radio: "r2",
+      checkbox: ["ch1", "ch3"]
     };
   }, []);
 
