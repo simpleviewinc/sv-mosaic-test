@@ -2,9 +2,9 @@ import {
   DataViewProps,
   MosaicObject,
   DataViewFilterText,
-  FilterSingleSelect,
+  DataViewFilterSingleSelect,
   DataViewFilterMultiselect,
-  FilterDate
+  DataViewFilterDate
 } from "@simpleview/sv-mosaic";
 import Add from "@mui/icons-material/Add";
 import Edit from "@mui/icons-material/Edit";
@@ -193,14 +193,14 @@ const filters: DataViewProps["filters"] = [
   {
     name: "date",
     label: "Date",
-    component: FilterDate,
+    component: DataViewFilterDate,
     type: "primary",
     onChange
   },
   {
     name: "boolean",
     label: "Boolean",
-    component: FilterSingleSelect,
+    component: DataViewFilterSingleSelect,
     type: "optional",
     onChange,
     args: {
