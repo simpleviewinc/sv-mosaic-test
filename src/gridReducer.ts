@@ -2,7 +2,7 @@ import {
   DataViewProps,
   MosaicObject,
   DataViewFilterText,
-  DataViewFilterSingleSelect,
+  DataViewFilterDropdown,
   DataViewFilterMultiselect,
   DataViewFilterDate
 } from "@simpleview/sv-mosaic";
@@ -10,11 +10,20 @@ import Add from "@mui/icons-material/Add";
 import Edit from "@mui/icons-material/Edit";
 import Delete from "@mui/icons-material/Delete";
 
+import { db } from "../db";
+
 /**
  * REDUCER AND ACTIONS
  */
 export default function reducer(state, action) {
   switch (action.type) {
+    case "DATA_LOADED": {
+      return {
+        ...state,
+        data: action.data,
+        count: action.count
+      };
+    }
     case "SAVED_VIEW": {
       return {
         ...state,
@@ -29,10 +38,62 @@ export default function reducer(state, action) {
         filter: action.filter
       };
     }
+    case "LIMIT": {
+      return {
+        ...state,
+        limit: action.key,
+        skip: 0
+      };
+    }
+    case "SKIP": {
+      return {
+        ...state,
+        skip: action.key
+      };
+    }
+    case "SORT": {
+      return {
+        ...state,
+        sort: action.key,
+        skip: 0
+      };
+    }
     default: {
       throw new Error("Action does not exist");
     }
   }
+}
+
+function dynamicSort(sortObj) {
+  const { name: column, dir } = sortObj;
+
+  let sortOrder = 1;
+  if (dir === "desc") {
+    sortOrder = -1;
+  }
+  return function (a, b) {
+    const result = a[column] < b[column] ? -1 : a[column] > b[column] ? 1 : 0;
+    return result * sortOrder;
+  };
+}
+
+export async function loadData({ limit, skip, sort }) {
+  const data = structuredClone(db);
+  let result;
+  result = data.sort(dynamicSort(sort));
+  result = result.slice(skip, skip + limit);
+  return {
+    data: result,
+    count: data.length
+  };
+}
+
+function dataLoaded({ data, count }) {
+  return {
+    type: "DATA_LOADED",
+    data,
+    count
+  };
 }
 
 function savedViewAction(savedView: DataViewProps["savedView"]) {
@@ -50,32 +111,40 @@ function activeFiltersAction({ activeFilters, filter }) {
   };
 }
 
+function limit(limit: number) {
+  return {
+    type: "LIMIT",
+    key: limit
+  };
+}
+
+function skip(skip: number) {
+  return {
+    type: "SKIP",
+    key: skip
+  };
+}
+
+function sort(sort) {
+  return {
+    type: "SORT",
+    key: sort
+  };
+}
+
 export const actions = {
+  loadData,
+  dataLoaded,
   savedView: savedViewAction,
-  activeFilters: activeFiltersAction
+  activeFilters: activeFiltersAction,
+  limit,
+  skip,
+  sort
 };
 
 /**
  *  INITIAL STATE
  */
-
-function randomDate(start, end) {
-  return new Date(
-    start.getTime() + Math.random() * (end.getTime() - start.getTime())
-  ).toISOString();
-}
-
-const data: MosaicObject = [];
-for (let i = 0; i < 50; i++) {
-  data.push({
-    foo: `Foo ${i}`,
-    bar: `Bar ${i}`,
-    number: `${i}`,
-    date: randomDate(new Date(2012, 0, 1), new Date()),
-    boolean: Math.random() < 0.5
-  });
-}
-
 const onClick = () => {
   alert("Click");
 };
@@ -106,16 +175,18 @@ const getSelected = () => {
 
 const columns: DataViewProps["columns"] = [
   {
+    name: "id",
+    label: "ID",
+    sortable: true
+  },
+  {
     name: "foo",
-    label: "Foo"
+    label: "Foo",
+    sortable: true
   },
   {
     name: "bar",
     label: "Bar"
-  },
-  {
-    name: "number",
-    label: "Number"
   },
   {
     name: "date",
@@ -165,7 +236,7 @@ const views: DataViewProps["savedView"][] = [
     state: {
       limit: 10,
       skip: 0,
-      activeColimns: ["foo", "number"]
+      activeColumns: ["id", "foo"]
     }
   },
   {
@@ -175,7 +246,17 @@ const views: DataViewProps["savedView"][] = [
     state: {
       limit: 15,
       skip: 0,
-      activeColimns: ["foo", "number", "date"]
+      activeColumns: ["id", "foo", "date"]
+    }
+  },
+  {
+    id: "3",
+    label: "All columns",
+    type: "default",
+    state: {
+      limit: 5,
+      skip: 0,
+      activeColumns: columns.map((c) => c.name)
     }
   }
 ];
@@ -200,7 +281,7 @@ const filters: DataViewProps["filters"] = [
   {
     name: "boolean",
     label: "Boolean",
-    component: DataViewFilterSingleSelect,
+    component: DataViewFilterDropdown,
     type: "optional",
     onChange,
     args: {
@@ -224,9 +305,14 @@ const filters: DataViewProps["filters"] = [
 export const initialState = {
   limit: 25,
   skip: 0,
-  data,
-  count: data.length,
+  data: [],
+  count: 0,
   columns,
+  activeColumns: columns.map((c) => c.name),
+  sort: {
+    name: "id",
+    dir: "asc"
+  },
   filters,
   activeFilters: [],
   buttons,
