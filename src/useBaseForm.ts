@@ -124,7 +124,7 @@ export default function useBaseForm(): FormProps {
             value: "ch2"
           },
           {
-            label: "Checkbox 2",
+            label: "Checkbox 3",
             value: "ch3"
           }
         ]
