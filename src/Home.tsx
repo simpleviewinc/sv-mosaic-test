@@ -15,6 +15,9 @@ export default function Home() {
       <li>
         <Link to="/form_prefill/">Form Prefill</Link>
       </li>
+      <li>
+        <Link to="/drawers/">Drawers</Link>
+      </li>
     </ul>
   );
 }
