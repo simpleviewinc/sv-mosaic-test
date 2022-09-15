@@ -1,15 +1,7 @@
-import { useCallback, useReducer } from "react";
+import { useCallback, useReducer, useEffect } from "react";
 import { DataViewProps } from "@simpleview/sv-mosaic";
 
-import reducer, { initialState, actions } from "./gridReducer";
-
-const onLimitChange = ({ limit }) => {
-  alert(limit);
-};
-
-const onSkipChange = ({ skip }) => {
-  alert(skip);
-};
+import reducer, { initialState, actions, loadData } from "./gridReducer";
 
 const onSavedViewSave = () => {
   alert("Saving a view is not yet supported");
@@ -37,17 +29,47 @@ export default function useGrid(): DataViewProps {
     [dispatch]
   );
 
+  const onLimitChange: DataViewProps["onLimitChange"] = useCallback(
+    ({ limit }: { limit: number }) => {
+      dispatch(actions.limit(limit));
+    },
+    [dispatch]
+  );
+
+  const onSkipChange: DataViewProps["onSkipChange"] = useCallback(
+    ({ skip }: { skip: number }) => {
+      dispatch(actions.skip(skip));
+    },
+    [dispatch]
+  );
+
+  const onSortChange: DataViewProps["onSortChange"] = useCallback(
+    (sort: DataViewSort) => {
+      dispatch(actions.sort(sort));
+    },
+    [dispatch]
+  );
+
   const onSavedViewGetOptions = () => {
     return state.views;
   };
+
+  useEffect(() => {
+    console.log("CALLED");
+    loadData(state).then((data) => {
+      dispatch(actions.dataLoaded(data));
+    });
+  }, [dispatch, state.limit, state.skip, state.sort]);
 
   return {
     title: "DataView Test",
     count: state.count,
     limit: state.limit,
     skip: state.skip,
+    sort: state.sort,
     buttons: state.buttons,
     columns: state.columns,
+    activeColumns: state.activeColumns,
     filters: state.filters,
     activeFilters: state.activeFilters,
     filter: {},
@@ -57,6 +79,7 @@ export default function useGrid(): DataViewProps {
     savedView: state.savedView,
     onLimitChange,
     onSkipChange,
+    onSortChange,
     onActiveFiltersChange,
     onSavedViewChange,
     onSavedViewSave,
