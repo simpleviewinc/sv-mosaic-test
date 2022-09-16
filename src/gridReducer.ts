@@ -1,7 +1,7 @@
 import {
   DataViewProps,
   DataViewFilterText,
-  DataViewFilterDropdown,
+  DataViewFilterSingleSelect,
   DataViewFilterMultiselect,
   DataViewFilterDate
 } from "@simpleview/sv-mosaic";
@@ -371,7 +371,7 @@ const filters: DataViewProps["filters"] = [
   {
     name: "boolean",
     label: "Boolean",
-    component: DataViewFilterDropdown,
+    component: DataViewFilterSingleSelect,
     type: "optional",
     args: {
       getSelected: getSingleSelectSelected,
