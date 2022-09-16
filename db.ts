@@ -1,8 +1,8 @@
 export const db = [
   {
     id: 0,
-    foo: "Text 1",
-    bar: "Example 1",
+    foo: "Text 0",
+    bar: "Example 0",
     date: "2022-04-29T14:35:13.613Z",
     boolean: true.toString()
   },
@@ -109,6 +109,13 @@ export const db = [
     foo: "Text 15",
     bar: "Example 15",
     date: "2022-09-01T21:42:13.637Z",
+    boolean: true.toString()
+  },
+  {
+    id: 16,
+    foo: "Text 16",
+    bar: "Example 16",
+    date: "2022-06-11T05:34:51.228Z",
     boolean: true.toString()
   }
 ];
