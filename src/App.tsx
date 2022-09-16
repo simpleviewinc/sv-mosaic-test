@@ -7,6 +7,16 @@ import DataView from "./DataView";
 import Form from "./Form";
 import FormPrefill from "./FormPrefill";
 
+import { db } from "../db";
+
+import localStorageDB from "localstoragedb";
+const database = new localStorageDB("new_docs", localStorage);
+
+if (database.isNew()) {
+  database.createTableWithData("data", db);
+  database.commit();
+}
+
 export default function App() {
   return (
     <div className="App">

@@ -9,7 +9,8 @@ import Add from "@mui/icons-material/Add";
 import Edit from "@mui/icons-material/Edit";
 import Delete from "@mui/icons-material/Delete";
 
-import { db } from "../db";
+import localStorageDB from "localstoragedb";
+const database = new localStorageDB("new_docs", localStorage);
 
 /**
  * REDUCER AND ACTIONS
@@ -89,7 +90,7 @@ function dynamicSort(sortObj) {
 }
 
 export async function loadData({ limit, skip, sort, filter }) {
-  const data = structuredClone(db);
+  const data = database.query("data");
   let result;
   result = data.sort(dynamicSort(sort));
 
@@ -213,6 +214,12 @@ const onClick = () => {
   alert("Click");
 };
 
+const onClickCreate = () => {
+  alert("Click");
+  //alert("Creating Dummy Record");
+  //database.insert("data", { id: 40, foo: "Testing Create" });
+};
+
 const singleSelectOptions = [
   {
     label: "Yes",
@@ -297,7 +304,7 @@ const buttons: DataViewProps["buttons"] = [
     color: "yellow",
     variant: "contained",
     mIcon: Add,
-    onClick
+    onClick: onClickCreate
   }
 ];
 
