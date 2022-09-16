@@ -1,4 +1,4 @@
-import { useCallback, useReducer, useEffect } from "react";
+import { useCallback, useReducer, useEffect, useMemo } from "react";
 import { DataViewProps } from "@simpleview/sv-mosaic";
 
 import reducer, { initialState, actions, loadData } from "./gridReducer";
@@ -23,7 +23,6 @@ export default function useGrid(): DataViewProps {
 
   const onActiveFiltersChange = useCallback(
     ({ activeFilters, filter }) => {
-      console.log({ activeFilters, filter });
       dispatch(actions.activeFilters({ activeFilters, filter }));
     },
     [dispatch]
@@ -44,7 +43,7 @@ export default function useGrid(): DataViewProps {
   );
 
   const onSortChange: DataViewProps["onSortChange"] = useCallback(
-    (sort: DataViewSort) => {
+    (sort) => {
       dispatch(actions.sort(sort));
     },
     [dispatch]
@@ -54,12 +53,28 @@ export default function useGrid(): DataViewProps {
     return state.views;
   };
 
+  const filters = useMemo(() => {
+    const filters = state.filters.map((val) => {
+      return {
+        name: val.name,
+        label: val.label,
+        type: val.type,
+        args: val.args,
+        component: val.component,
+        onChange: (value) => {
+          dispatch(actions.filter({ name: val.name, value }));
+        }
+      };
+    });
+
+    return filters;
+  }, [state.filters, dispatch]);
+
   useEffect(() => {
-    console.log("CALLED");
     loadData(state).then((data) => {
       dispatch(actions.dataLoaded(data));
     });
-  }, [dispatch, state.limit, state.skip, state.sort]);
+  }, [state.limit, state.skip, state.sort, state.filter, dispatch]);
 
   return {
     title: "DataView Test",
@@ -70,9 +85,9 @@ export default function useGrid(): DataViewProps {
     buttons: state.buttons,
     columns: state.columns,
     activeColumns: state.activeColumns,
-    filters: state.filters,
+    filters,
     activeFilters: state.activeFilters,
-    filter: {},
+    filter: state.filter,
     data: state.data,
     primaryActions: state.primaryActions,
     views: state.views,
