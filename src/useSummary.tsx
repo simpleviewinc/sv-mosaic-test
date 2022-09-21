@@ -1,8 +1,18 @@
+import { useCallback } from "react";
 import Settings from "@mui/icons-material/Settings";
 import Delete from "@mui/icons-material/Delete";
 import ManageAccounts from "@mui/icons-material/ManageAccounts";
 import Terminal from "@mui/icons-material/Terminal";
-import { Button } from "@simpleview/sv-mosaic";
+import {
+  Button,
+  transform_dateFormat,
+  transform_boolean,
+  transform_colorPicker
+} from "@simpleview/sv-mosaic";
+
+const transform_text = () => {
+  return ({ data }) => data;
+};
 
 export default function useSummary() {
   /**
@@ -153,6 +163,51 @@ export default function useSummary() {
     ]
   ];
 
+  /**
+   * Content Props
+   */
+
+  const fieldDef = [
+    {
+      name: "text",
+      label: "Text",
+      transforms: [transform_text()]
+    },
+    {
+      name: "date",
+      label: "Date",
+      transforms: [transform_dateFormat()]
+    },
+    {
+      name: "boolean",
+      label: "Boolean",
+      transforms: [transform_boolean()]
+    },
+    {
+      name: "color",
+      label: "Color",
+      transforms: [transform_colorPicker()]
+    }
+  ];
+
+  const sections = [
+    [["text"], ["boolean"]],
+    [["date"], ["color"]]
+  ];
+
+  const values = {
+    text: "This is a text",
+    date: new Date("April 22, 1998 09:00:00"),
+    boolean: true,
+    color: "#008000"
+  };
+
+  const getValues = useCallback(async function () {
+    return values;
+  }, []);
+
+  const onEdit = () => alert("Edit button clicked");
+
   return {
     top: {
       title: "Summary Title",
@@ -166,6 +221,13 @@ export default function useSummary() {
     },
     sideNav: {
       links
+    },
+    content: {
+      title: "Content Title",
+      fieldDef,
+      sections,
+      getValues,
+      onEdit
     }
   };
 }
