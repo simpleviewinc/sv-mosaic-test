@@ -6,6 +6,7 @@ import Buttons from "./Buttons";
 import DataView from "./DataView";
 import Form from "./Form";
 import FormPrefill from "./FormPrefill";
+import Summary from "./Summary";
 
 import { db } from "../db";
 
@@ -28,6 +29,7 @@ export default function App() {
           <Route path="/dataview/" element={<DataView />} />
           <Route path="/form/" element={<Form />} />
           <Route path="/form_prefill/" element={<FormPrefill />} />
+          <Route path="/summary/" element={<Summary />} />
         </Routes>
       </div>
     </div>
