@@ -3,6 +3,9 @@ import Settings from "@mui/icons-material/Settings";
 import Delete from "@mui/icons-material/Delete";
 import ManageAccounts from "@mui/icons-material/ManageAccounts";
 import Terminal from "@mui/icons-material/Terminal";
+import Interests from "@mui/icons-material/Interests";
+import Mood from "@mui/icons-material/Mood";
+import PlusOne from "@mui/icons-material/PlusOne";
 import {
   Button,
   transform_dateFormat,
@@ -208,6 +211,51 @@ export default function useSummary() {
 
   const onEdit = () => alert("Edit button clicked");
 
+  /**
+   * Card Props
+   */
+
+  const topAction = {
+    color: "blue",
+    variant: "icon",
+    onClick: () => alert("topAction Card click"),
+    mIcon: Mood
+  };
+
+  const bottomAction = {
+    color: "teal",
+    label: "Add a new task",
+    variant: "text",
+    onClick: () => alert("Add new task clicked"),
+    mIcon: PlusOne
+  };
+
+  const contentCard = [
+    <h1>Card Content Title</h1>,
+    <h3>Sub title</h3>,
+    <div>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid
+        consectetur, beatae dignissimos cum obcaecati minima blanditiis dolore
+        nisi magnam facilis, autem sequi! Saepe quos esse enim, tenetur sunt
+        ipsum sed.
+      </p>
+      <Button
+        color="yellow"
+        variant="contained"
+        label="Card btn"
+        onClick={() => alert("Card btn Click")}
+      />
+      <Button
+        color="blue"
+        variant="contained"
+        label="Test Card btn"
+        mIcon={Terminal}
+        onClick={() => alert("Test Card btn")}
+      />
+    </div>
+  ];
+
   return {
     top: {
       title: "Summary Title",
@@ -228,6 +276,13 @@ export default function useSummary() {
       sections,
       getValues,
       onEdit
+    },
+    card: {
+      title: "Card Title",
+      titleIcon: <Interests />,
+      topAction,
+      content: contentCard,
+      bottomAction
     }
   };
 }

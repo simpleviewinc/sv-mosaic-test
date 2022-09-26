@@ -2,7 +2,8 @@ import { Fragment } from "react";
 import {
   SummaryPageTopComponent,
   SideNav,
-  Content
+  Content,
+  Card
 } from "@simpleview/sv-mosaic";
 
 export default function SummaryPage(props) {
@@ -12,6 +13,7 @@ export default function SummaryPage(props) {
       <div style={{ display: "flex" }}>
         <SideNav {...props.sideNav} />
         <Content {...props.content} />
+        <Card {...props.card} />
       </div>
     </Fragment>
   );
