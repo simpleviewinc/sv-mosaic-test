@@ -12,6 +12,7 @@ import {
   transform_boolean,
   transform_colorPicker
 } from "@simpleview/sv-mosaic";
+import Home from "@mui/icons-material/Home";
 
 const transform_text = () => {
   return ({ data }) => data;
@@ -115,11 +116,13 @@ export default function useSummary() {
     [
       {
         label: "Home",
-        onClick: () => alert("Home")
+        onClick: () => alert("Home"),
+        icon: Home
       },
       {
         label: "Accounts",
-        onClick: () => alert("Accounts")
+        onClick: () => alert("Accounts"),
+        icon: ManageAccounts
       },
       {
         label: "Gallery",
