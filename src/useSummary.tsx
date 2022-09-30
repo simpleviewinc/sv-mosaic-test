@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import Settings from "@mui/icons-material/Settings";
 import Delete from "@mui/icons-material/Delete";
 import ManageAccounts from "@mui/icons-material/ManageAccounts";
@@ -6,6 +6,7 @@ import Terminal from "@mui/icons-material/Terminal";
 import Interests from "@mui/icons-material/Interests";
 import Mood from "@mui/icons-material/Mood";
 import PlusOne from "@mui/icons-material/PlusOne";
+import AddCircleOutline from "@mui/icons-material/AddCircleOutline";
 import {
   Button,
   transform_dateFormat,
@@ -46,10 +47,13 @@ export default function useSummary() {
     args: { getOptions, getSelected, required: false }
   };
 
+  const [checked, setChecked] = useState<boolean>(false);
+
   const favorite = {
-    checked: true,
+    checked,
     onClick: (val) => {
       alert(`Star changed to ${val ? "checked" : "unchecked"}`);
+      setChecked(val);
     }
   };
 
@@ -155,7 +159,11 @@ export default function useSummary() {
       {
         label: "Tasks",
         badge: "99",
-        onClick: () => alert("Tasks")
+        onClick: () => alert("Tasks"),
+        action: {
+          icon: AddCircleOutline,
+          onClick: () => alert("Add task clicked")
+        }
       },
       {
         label: "Documents",
