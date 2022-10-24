@@ -1,6 +1,5 @@
 import {
   DataViewProps,
-  MosaicObject,
   DataViewFilterText,
   DataViewFilterSingleSelect,
   DataViewFilterMultiselect,
@@ -10,11 +9,21 @@ import Add from "@mui/icons-material/Add";
 import Edit from "@mui/icons-material/Edit";
 import Delete from "@mui/icons-material/Delete";
 
+import localStorageDB from "localstoragedb";
+const database = new localStorageDB("new_docs", localStorage);
+
 /**
  * REDUCER AND ACTIONS
  */
 export default function reducer(state, action) {
   switch (action.type) {
+    case "DATA_LOADED": {
+      return {
+        ...state,
+        data: action.data,
+        count: action.count
+      };
+    }
     case "SAVED_VIEW": {
       return {
         ...state,
@@ -29,10 +38,118 @@ export default function reducer(state, action) {
         filter: action.filter
       };
     }
+    case "FILTER": {
+      const filter = {
+        ...state.filter,
+        [action.name]: action.value
+      };
+
+      return {
+        ...state,
+        filter,
+        skip: 0
+      };
+    }
+    case "LIMIT": {
+      return {
+        ...state,
+        limit: action.key,
+        skip: 0
+      };
+    }
+    case "SKIP": {
+      return {
+        ...state,
+        skip: action.key
+      };
+    }
+    case "SORT": {
+      return {
+        ...state,
+        sort: action.key,
+        skip: 0
+      };
+    }
     default: {
       throw new Error("Action does not exist");
     }
   }
+}
+
+function dynamicSort(sortObj) {
+  const { name: column, dir } = sortObj;
+
+  let sortOrder = 1;
+  if (dir === "desc") {
+    sortOrder = -1;
+  }
+  return function (a, b) {
+    const result = a[column] < b[column] ? -1 : a[column] > b[column] ? 1 : 0;
+    return result * sortOrder;
+  };
+}
+
+export async function loadData({ limit, skip, sort, filter }) {
+  const data = database.query("data");
+  let result;
+  result = data.sort(dynamicSort(sort));
+
+  // Filters
+  if (filter.foo) {
+    result = result.filter((r) => r.foo === filter.foo.value);
+  }
+  if (filter.boolean) {
+    if (filter.boolean.value) {
+      result = result.filter((r) => r.boolean === filter.boolean.value);
+    }
+  }
+  if (filter.date) {
+    const startDate = filter.date.rangeStart
+      ? filter.date.rangeStart.toISOString()
+      : filter.date.rangeStart;
+    const endDate = filter.date.rangeEnd
+      ? filter.date.rangeEnd.toISOString()
+      : filter.date.rangeEnd;
+    if (startDate && endDate) {
+      result = result.filter((r) => {
+        return r.date >= startDate && r.date <= endDate;
+      });
+    } else if (startDate && !endDate) {
+      result = result.filter((r) => {
+        return r.date >= startDate;
+      });
+    } else if (!startDate && endDate) {
+      result = result.filter((r) => {
+        return r.date <= endDate;
+      });
+    }
+  }
+  if (filter.bar) {
+    if (filter.bar.value.length !== 0) {
+      const newResult = [];
+      for (let index = 0; index < filter.bar.value.length; index++) {
+        const filterResult = result.filter(
+          (r) => r.bar === filter.bar.value[index]
+        );
+        newResult.push(...filterResult);
+      }
+      result = newResult;
+    }
+  }
+
+  result = result.slice(skip, skip + limit);
+  return {
+    data: result,
+    count: data.length
+  };
+}
+
+function dataLoaded({ data, count }) {
+  return {
+    type: "DATA_LOADED",
+    data,
+    count
+  };
 }
 
 function savedViewAction(savedView: DataViewProps["savedView"]) {
@@ -50,72 +167,125 @@ function activeFiltersAction({ activeFilters, filter }) {
   };
 }
 
+function filterAction({ name, value }) {
+  return {
+    type: "FILTER",
+    name,
+    value
+  };
+}
+
+function limit(limit: number) {
+  return {
+    type: "LIMIT",
+    key: limit
+  };
+}
+
+function skip(skip: number) {
+  return {
+    type: "SKIP",
+    key: skip
+  };
+}
+
+function sort(sort) {
+  return {
+    type: "SORT",
+    key: sort
+  };
+}
+
 export const actions = {
+  loadData,
+  dataLoaded,
   savedView: savedViewAction,
-  activeFilters: activeFiltersAction
+  activeFilters: activeFiltersAction,
+  filter: filterAction,
+  limit,
+  skip,
+  sort
 };
 
 /**
  *  INITIAL STATE
  */
-
-function randomDate(start, end) {
-  return new Date(
-    start.getTime() + Math.random() * (end.getTime() - start.getTime())
-  ).toISOString();
-}
-
-const data: MosaicObject = [];
-for (let i = 0; i < 50; i++) {
-  data.push({
-    foo: `Foo ${i}`,
-    bar: `Bar ${i}`,
-    number: `${i}`,
-    date: randomDate(new Date(2012, 0, 1), new Date()),
-    boolean: Math.random() < 0.5
-  });
-}
-
 const onClick = () => {
   alert("Click");
 };
 
-const onChange = () => {
-  alert("Change");
+const onClickCreate = () => {
+  alert("Click");
+  //alert("Creating Dummy Record");
+  //database.insert("data", { id: 40, foo: "Testing Create" });
 };
 
-const getOptions = () => {
+const singleSelectOptions = [
+  {
+    label: "Yes",
+    value: "true"
+  },
+  {
+    label: "No",
+    value: "false"
+  }
+];
+
+const getSingleSelectOptions = () => {
   return {
-    docs: [
-      {
-        label: "Yes",
-        value: "true"
-      },
-      {
-        label: "No",
-        value: "false"
-      }
-    ],
+    docs: singleSelectOptions,
     hasMore: false
   };
 };
 
-const getSelected = () => {
-  console.log("getSelected");
+const getSingleSelectSelected = (id) => {
+  return singleSelectOptions.filter((val) => val.value === id)[0];
+};
+
+const multiSelectOptions = [];
+for (let index = 1; index < 16; index++) {
+  multiSelectOptions.push({
+    label: `Example ${index}`,
+    value: `Example ${index}`
+  });
+}
+
+const getMultiSelectOptions = () => {
+  return {
+    docs: multiSelectOptions,
+    hasMore: false
+  };
+};
+
+const getMultiSelectSelected = (ids) => {
+  if (ids.length === 0) {
+    return [];
+  }
+
+  const selectedOptions = [];
+  for (let index = 0; index < ids.length; index++) {
+    const selectOption = multiSelectOptions.find(
+      (val) => val.value === ids[index]
+    );
+    selectedOptions.push(selectOption);
+  }
+  return selectedOptions;
 };
 
 const columns: DataViewProps["columns"] = [
   {
+    name: "id",
+    label: "ID",
+    sortable: true
+  },
+  {
     name: "foo",
-    label: "Foo"
+    label: "Foo",
+    sortable: true
   },
   {
     name: "bar",
     label: "Bar"
-  },
-  {
-    name: "number",
-    label: "Number"
   },
   {
     name: "date",
@@ -134,7 +304,7 @@ const buttons: DataViewProps["buttons"] = [
     color: "yellow",
     variant: "contained",
     mIcon: Add,
-    onClick
+    onClick: onClickCreate
   }
 ];
 
@@ -165,7 +335,7 @@ const views: DataViewProps["savedView"][] = [
     state: {
       limit: 10,
       skip: 0,
-      activeColimns: ["foo", "number"]
+      activeColumns: ["id", "foo"]
     }
   },
   {
@@ -175,58 +345,70 @@ const views: DataViewProps["savedView"][] = [
     state: {
       limit: 15,
       skip: 0,
-      activeColimns: ["foo", "number", "date"]
+      activeColumns: ["id", "foo", "date"]
+    }
+  },
+  {
+    id: "3",
+    label: "All columns",
+    type: "default",
+    state: {
+      limit: 5,
+      skip: 0,
+      activeColumns: columns.map((c) => c.name)
     }
   }
 ];
 
-const savedView = views[0];
+const savedView = views[2];
 
 const filters: DataViewProps["filters"] = [
   {
     name: "foo",
     label: "Foo",
     component: DataViewFilterText,
-    type: "primary",
-    onChange
+    type: "primary"
   },
   {
     name: "date",
     label: "Date",
     component: DataViewFilterDate,
-    type: "primary",
-    onChange
+    type: "primary"
   },
   {
     name: "boolean",
     label: "Boolean",
     component: DataViewFilterSingleSelect,
     type: "optional",
-    onChange,
     args: {
-      getSelected,
-      getOptions
+      getSelected: getSingleSelectSelected,
+      getOptions: getSingleSelectOptions
+    }
+  },
+  {
+    name: "bar",
+    label: "Bar",
+    component: DataViewFilterMultiselect,
+    type: "optional",
+    args: {
+      getSelected: getMultiSelectSelected,
+      getOptions: getMultiSelectOptions
     }
   }
-  // {
-  //   name: "bar",
-  //   label: "Bar",
-  //   component: DataViewFilterMultiselect,
-  //   type: "optional",
-  //   onChange,
-  //   args: {
-  //     getSelected,
-  //     getOptions
-  //   }
-  // }
 ];
 
 export const initialState = {
   limit: 25,
   skip: 0,
-  data,
-  count: data.length,
+  data: [],
+  count: 0,
   columns,
+  activeColumns: columns.map((c) => c.name),
+  sort: {
+    name: "id",
+    dir: "asc"
+  },
+  filter: {},
   filters,
   activeFilters: [],
   buttons,

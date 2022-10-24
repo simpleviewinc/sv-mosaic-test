@@ -7,6 +7,17 @@ import DataView from "./DataView";
 import Form from "./Form";
 import FormPrefill from "./FormPrefill";
 import Drawers from "./Drawers";
+import Summary from "./Summary";
+
+import { db } from "../db";
+
+import localStorageDB from "localstoragedb";
+const database = new localStorageDB("new_docs", localStorage);
+
+if (database.isNew()) {
+  database.createTableWithData("data", db);
+  database.commit();
+}
 
 export default function App() {
   return (
@@ -20,6 +31,7 @@ export default function App() {
           <Route path="/form/" element={<Form />} />
           <Route path="/form_prefill/" element={<FormPrefill />} />
           <Route path="/drawers/" element={<Drawers />} />
+          <Route path="/summary/" element={<Summary />} />
         </Routes>
       </div>
     </div>
