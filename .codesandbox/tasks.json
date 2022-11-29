@@ -1,0 +1,9 @@
+{
+    "setupTasks": [],
+    "tasks": {
+        "hello": {
+            "name": "Say Hello",
+            "command": "echo yo"
+        }
+    }
+}
