@@ -9,7 +9,7 @@ import FormPrefill from "./FormPrefill";
 import Drawers from "./Drawers";
 import Summary from "./Summary";
 
-import { db } from "../db";
+import { db } from "./db";
 
 import localStorageDB from "localstoragedb";
 const database = new localStorageDB("new_docs", localStorage);
