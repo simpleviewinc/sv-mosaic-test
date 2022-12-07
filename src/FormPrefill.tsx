@@ -7,7 +7,6 @@ export default function Form() {
   const args = useBaseForm();
 
   args.getFormValues = useCallback(async function () {
-    console.log("called");
     return {
       foo: "Foo Value",
       textArea: "Bar value",

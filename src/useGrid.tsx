@@ -90,6 +90,7 @@ export default function useGrid(): DataViewProps {
     filter: state.filter,
     data: state.data,
     primaryActions: state.primaryActions,
+    //@ts-expect-error
     views: state.views,
     savedView: state.savedView,
     onLimitChange,

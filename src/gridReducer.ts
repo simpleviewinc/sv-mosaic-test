@@ -3,7 +3,8 @@ import {
   DataViewFilterText,
   DataViewFilterSingleSelect,
   DataViewFilterMultiselect,
-  DataViewFilterDate
+  DataViewFilterDate,
+  MosaicLabelValue
 } from "@simpleview/sv-mosaic";
 import Add from "@mui/icons-material/Add";
 import Edit from "@mui/icons-material/Edit";
@@ -131,6 +132,7 @@ export async function loadData({ limit, skip, sort, filter }) {
         const filterResult = result.filter(
           (r) => r.bar === filter.bar.value[index]
         );
+        //@ts-expect-error
         newResult.push(...filterResult);
       }
       result = newResult;
@@ -242,7 +244,7 @@ const getSingleSelectSelected = (id) => {
   return singleSelectOptions.filter((val) => val.value === id)[0];
 };
 
-const multiSelectOptions = [];
+const multiSelectOptions: MosaicLabelValue[] = [];
 for (let index = 1; index < 16; index++) {
   multiSelectOptions.push({
     label: `Example ${index}`,
@@ -267,6 +269,7 @@ const getMultiSelectSelected = (ids) => {
     const selectOption = multiSelectOptions.find(
       (val) => val.value === ids[index]
     );
+    //@ts-expect-error
     selectedOptions.push(selectOption);
   }
   return selectedOptions;
@@ -332,16 +335,18 @@ const views: DataViewProps["savedView"][] = [
     id: "1",
     label: "Saved View 1",
     type: "default",
+    //@ts-ignore
     state: {
       limit: 10,
       skip: 0,
-      activeColumns: ["id", "foo"]
+      activeColumns: ["id", "foo"],
     }
   },
   {
     id: "2",
     label: "Saved View 2",
     type: "default",
+    //@ts-ignore
     state: {
       limit: 15,
       skip: 0,
@@ -352,6 +357,7 @@ const views: DataViewProps["savedView"][] = [
     id: "3",
     label: "All columns",
     type: "default",
+    //@ts-ignore
     state: {
       limit: 5,
       skip: 0,
@@ -366,18 +372,21 @@ const filters: DataViewProps["filters"] = [
   {
     name: "foo",
     label: "Foo",
+    //@ts-expect-error
     component: DataViewFilterText,
     type: "primary"
   },
   {
     name: "date",
     label: "Date",
+    //@ts-expect-error
     component: DataViewFilterDate,
     type: "primary"
   },
   {
     name: "boolean",
     label: "Boolean",
+    //@ts-expect-error
     component: DataViewFilterSingleSelect,
     type: "optional",
     args: {
@@ -388,6 +397,7 @@ const filters: DataViewProps["filters"] = [
   {
     name: "bar",
     label: "Bar",
+    //@ts-expect-error
     component: DataViewFilterMultiselect,
     type: "optional",
     args: {
@@ -415,5 +425,6 @@ export const initialState = {
   primaryActions,
   views,
   savedView,
+  //@ts-expect-error
   ...savedView.state
 };

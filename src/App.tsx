@@ -1,4 +1,5 @@
 import "./styles.css";
+import { useEffect } from "react";
 import { Link, Routes, Route } from "react-router-dom";
 
 import Home from "./Home";
@@ -14,12 +15,14 @@ import { db } from "./db";
 import localStorageDB from "localstoragedb";
 const database = new localStorageDB("new_docs", localStorage);
 
-if (database.isNew()) {
-  database.createTableWithData("data", db);
-  database.commit();
-}
-
 export default function App() {
+  useEffect(() => {
+    if (database.isNew()) {
+      database.createTableWithData("data", db);
+      database.commit();
+    }
+  }, []);
+
   return (
     <div className="App">
       <Link to="/">Home</Link>
