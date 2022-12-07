@@ -1,9 +1,12 @@
 {
-    "setupTasks": [],
-    "tasks": {
-        "hello": {
-            "name": "Say Hello",
-            "command": "echo yo"
-        }
+  "setupTasks": [
+    {
+      "name": "Installing Dependencies",
+      "command": "yarn install"
+    },
+    {
+      "name": "Building Workspace",
+      "command": "yarn build"
     }
+  ]
 }
