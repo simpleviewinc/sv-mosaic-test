@@ -1,4 +1,4 @@
-import { Button, FormDialog as Dialog } from "@simpleview/sv-mosaic";
+import { Button, Dialog } from "@simpleview/sv-mosaic";
 import React from "react";
 
 export default function () {
