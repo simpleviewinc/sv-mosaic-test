@@ -133,6 +133,28 @@ export default function useBaseForm(): FormProps {
           }
         ]
       }
+    },
+    {
+      name: "advanced-selection",
+      label: "Advanced Selection",
+      type: "advancedSelection",
+      inputSettings: {
+        selectLimit: 2,
+        createNewOption: (value) => ({
+          label: `Option ${value}`,
+          value: `option-${value}`
+        }),
+        options: [
+          {
+            label: "Option 1",
+            value: "option-1"
+          },
+          {
+            label: "Option 2",
+            value: "option-2"
+          }
+        ]
+      }
     }
   ];
 
