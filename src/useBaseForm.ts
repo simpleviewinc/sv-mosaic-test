@@ -47,7 +47,11 @@ export default function useBaseForm(): FormProps {
     {
       name: "addresses",
       label: "Addresses",
-      type: "address"
+      type: "address",
+      inputSettings: {
+        getOptionsCountries: () => [{ label: "USA", value: "usa" }],
+        getOptionsStates: () => [{ label: "AZ", value: "AZ" }]
+      }
     },
     {
       name: "chip",

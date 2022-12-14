@@ -9,6 +9,7 @@ import Form from "./Form";
 import FormPrefill from "./FormPrefill";
 import Drawers from "./Drawers";
 import Summary from "./Summary";
+import Dialog from "./Dialog";
 
 import { db } from "./db";
 
@@ -31,6 +32,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/buttons/" element={<Buttons />} />
           <Route path="/dataview/" element={<DataView />} />
+          <Route path="/dialog/" element={<Dialog />} />
           <Route path="/form/" element={<Form />} />
           <Route path="/form_prefill/" element={<FormPrefill />} />
           <Route path="/drawers/" element={<Drawers />} />

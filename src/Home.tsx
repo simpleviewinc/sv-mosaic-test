@@ -10,6 +10,9 @@ export default function Home() {
         <Link to="/dataview/">DataView</Link>
       </li>
       <li>
+        <Link to="/dialog/">Dialog</Link>
+      </li>
+      <li>
         <Link to="/form/">Form</Link>
       </li>
       <li>
