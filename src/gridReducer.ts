@@ -406,8 +406,7 @@ export const initialState = {
   data: [],
   count: 0,
   columns,
-  _activeColumns: columns.map((c) => c.name),
-  activeColumns: ["wow"],
+  activeColumns: columns.map((c) => c.name),
   sort: {
     name: "foo",
     dir: "asc"
