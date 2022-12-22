@@ -58,7 +58,6 @@ export default function useGrid(): DataViewProps {
       return {
         name: val.name,
         label: val.label,
-        type: val.type,
         args: val.args,
         component: val.component,
         onChange: (value) => {

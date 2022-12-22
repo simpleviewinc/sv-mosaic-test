@@ -41,7 +41,12 @@ export default function useBaseForm(): FormProps {
       label: "Coords",
       type: "mapCoordinates",
       inputSettings: {
-        apiKey: "AIzaSyArV4f-KFF86Zn9VWAu9wS4hHlG1TXxqac"
+        apiKey: "AIzaSyArV4f-KFF86Zn9VWAu9wS4hHlG1TXxqac",
+        address: {},
+        mapPosition: {
+          lat: 0,
+          lng: 0
+        }
       }
     },
     {
@@ -130,6 +135,28 @@ export default function useBaseForm(): FormProps {
           {
             label: "Checkbox 3",
             value: "ch3"
+          }
+        ]
+      }
+    },
+    {
+      name: "advanced-selection",
+      label: "Advanced Selection",
+      type: "advancedSelection",
+      inputSettings: {
+        selectLimit: 2,
+        createNewOption: (value) => ({
+          label: `Option ${value}`,
+          value: `option-${value}`
+        }),
+        options: [
+          {
+            label: "Option 1",
+            value: "option-1"
+          },
+          {
+            label: "Option 2",
+            value: "option-2"
           }
         ]
       }
