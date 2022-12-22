@@ -41,7 +41,12 @@ export default function useBaseForm(): FormProps {
       label: "Coords",
       type: "mapCoordinates",
       inputSettings: {
-        apiKey: "AIzaSyArV4f-KFF86Zn9VWAu9wS4hHlG1TXxqac"
+        apiKey: "AIzaSyArV4f-KFF86Zn9VWAu9wS4hHlG1TXxqac",
+        address: {},
+        mapPosition: {
+          lat: 0,
+          lng: 0
+        }
       }
     },
     {
