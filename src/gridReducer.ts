@@ -339,7 +339,7 @@ const views: DataViewProps["savedView"][] = [
     state: {
       limit: 10,
       skip: 0,
-      activeColumns: ["id", "foo"],
+      activeColumns: ["id", "foo"]
     }
   },
   {
@@ -368,27 +368,22 @@ const views: DataViewProps["savedView"][] = [
 
 const savedView = views[2];
 
-const filters: DataViewProps["filters"] = [
+// omit onChange because they get added in useGrid hook
+const filters: Omit<DataViewProps["filters"], "onChange"> = [
   {
     name: "foo",
     label: "Foo",
-    //@ts-expect-error
-    component: DataViewFilterText,
-    type: "primary"
+    component: DataViewFilterText
   },
   {
     name: "date",
     label: "Date",
-    //@ts-expect-error
-    component: DataViewFilterDate,
-    type: "primary"
+    component: DataViewFilterDate
   },
   {
     name: "boolean",
     label: "Boolean",
-    //@ts-expect-error
     component: DataViewFilterSingleSelect,
-    type: "optional",
     args: {
       getSelected: getSingleSelectSelected,
       getOptions: getSingleSelectOptions
@@ -397,9 +392,7 @@ const filters: DataViewProps["filters"] = [
   {
     name: "bar",
     label: "Bar",
-    //@ts-expect-error
     component: DataViewFilterMultiselect,
-    type: "optional",
     args: {
       getSelected: getMultiSelectSelected,
       getOptions: getMultiSelectOptions
@@ -415,12 +408,12 @@ export const initialState = {
   columns,
   activeColumns: columns.map((c) => c.name),
   sort: {
-    name: "id",
+    name: "foo",
     dir: "asc"
   },
   filter: {},
   filters,
-  activeFilters: [],
+  activeFilters: ["foo", "date"],
   buttons,
   primaryActions,
   views,

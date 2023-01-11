@@ -1,5 +1,4 @@
 import "./styles.css";
-import { useEffect } from "react";
 import { Link, Routes, Route } from "react-router-dom";
 
 import Home from "./Home";
@@ -10,19 +9,10 @@ import FormPrefill from "./FormPrefill";
 import Drawers from "./Drawers";
 import Summary from "./Summary";
 import Dialog from "./Dialog";
-
-import { db } from "./db";
-
-import localStorageDB from "localstoragedb";
-const database = new localStorageDB("new_docs", localStorage);
+import useDb from "./useDb";
 
 export default function App() {
-  useEffect(() => {
-    if (database.isNew()) {
-      database.createTableWithData("data", db);
-      database.commit();
-    }
-  }, []);
+  useDb();
 
   return (
     <div className="App">
