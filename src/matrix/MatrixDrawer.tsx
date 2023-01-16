@@ -70,29 +70,19 @@ function FormDrawerContent({ id, onCloseDrawer, state, dispatch }) {
   );
 }
 
-const gridVariantData = [
-  {
-    title: "Row 1",
-    description: "Description for row 1",
-    target: false,
-    created: new Date(Date.now()),
-    updated: new Date(Date.now()),
-    id: "1"
-  },
-  {
-    title: "Row 2",
-    description: "Description for row 2",
-    target: false,
-    created: new Date(Date.now()),
-    updated: new Date(Date.now()),
-    id: "2"
-  }
-];
+const gridVariantData = Array.from(Array(30)).map((_, idx) => ({
+  title: "Row " + idx,
+  description: "Description for row " + idx,
+  target: false,
+  created: new Date(Date.now()),
+  updated: new Date(Date.now()),
+  id: `${idx}`
+}));
 
 /** Drawer containing a data view */
-function GridDrawerContent({ id, state, dispatch, onCloseDrawer }) {
+function GridDrawerContent({ dispatch, onCloseDrawer }) {
   const [checkedRows, setCheckedRows] = useState(
-    gridVariantData.map(() => false)
+    Array(gridVariantData.length).fill(false)
   );
 
   const onSave = useCallback(async () => {
@@ -113,7 +103,6 @@ function GridDrawerContent({ id, state, dispatch, onCloseDrawer }) {
 
   const drawerGrid = useMemo(
     () => ({
-      limit: 25,
       display: "list",
       activeColumns: ["id", "title", "description"],
       checked: checkedRows,
@@ -131,7 +120,7 @@ function GridDrawerContent({ id, state, dispatch, onCloseDrawer }) {
           label: "Title"
         }
       ],
-      onCheckChange: (checked) => setCheckedRows(checked),
+      onCheckChange: setCheckedRows,
       primaryActions: [
         {
           name: "delete",
