@@ -1,6 +1,6 @@
 import { FormProps, useForm, formActions } from "@simpleview/sv-mosaic";
 import getMatrixDataView from "../matrix/MatrixGridConfig";
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 
 async function submit(dispatch: any) {
   const { data } = await dispatch(formActions.submitForm());
@@ -13,6 +13,8 @@ export default function useBaseForm({
   openDrawer?: ({ name, type }: { name: string; type: string }) => void;
 } = {}): FormProps {
   const { state, dispatch } = useForm();
+
+  console.log({ state });
 
   function onSubmit() {
     return submit(dispatch);

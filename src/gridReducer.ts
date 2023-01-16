@@ -378,7 +378,10 @@ const filters: Omit<DataViewProps["filters"], "onChange"> = [
   {
     name: "date",
     label: "Date",
-    component: DataViewFilterDate
+    component: DataViewFilterDate,
+    args: {
+      options: [{ label: "Last 30 Days", value: "last-30" }]
+    }
   },
   {
     name: "boolean",

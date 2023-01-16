@@ -23,7 +23,6 @@ export default function useSummary() {
   /**
    * SummaryPageTopComponent Props
    */
-
   const options = [
     { label: "Option A", value: "a" },
     { label: "Option B", value: "b" },
@@ -116,50 +115,45 @@ export default function useSummary() {
    * SideNav Props
    */
 
-  const links = [
+  const items = [
     [
       {
         label: "Home",
-        onClick: () => alert("Home"),
         icon: Home
       },
       {
         label: "Accounts",
-        onClick: () => alert("Accounts"),
         icon: ManageAccounts
       },
       {
-        label: "Gallery",
-        onClick: () => alert("Gallery")
+        label: "Gallery"
       },
       {
-        label: "Visitors",
-        onClick: () => alert("Visitors")
+        label: "Visitors"
       },
       {
-        label: "Sitemap",
-        onClick: () => alert("Sitemap")
+        label: "Sitemap"
       }
     ],
     [
       {
         label: "Assets",
-        onClick: () => alert("Assets")
+        onNav: () => alert("Assets")
       },
       {
         label: "Map Publisher",
-        onClick: () => alert("Map Publisher")
+        onNav: () => alert("Map Publisher")
       },
       {
         label: "Dynamic Content",
-        onClick: () => alert("Dynamic Content")
+        onNav: () => alert("Dynamic Content")
       }
     ],
     [
       {
         label: "Tasks",
         badge: "99",
-        onClick: () => alert("Tasks"),
+        onNav: () => alert("Tasks"),
         action: {
           icon: AddCircleOutline,
           onClick: () => alert("Add task clicked")
@@ -167,12 +161,12 @@ export default function useSummary() {
       },
       {
         label: "Documents",
-        onClick: () => alert("Documents")
+        onNav: () => alert("Documents")
       },
       {
         label: "Notes",
         badge: "1",
-        onClick: () => alert("Notes")
+        onNav: () => alert("Notes")
       }
     ]
   ];
@@ -279,7 +273,8 @@ export default function useSummary() {
       descriptionItems
     },
     sideNav: {
-      links
+      items,
+      onNav: ({ item }) => alert("Global on nav handler for: " + item.label)
     },
     content: {
       title: "Content Title",
