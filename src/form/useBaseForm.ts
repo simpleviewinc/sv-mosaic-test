@@ -1,18 +1,64 @@
 import { FormProps, useForm, formActions } from "@simpleview/sv-mosaic";
+import getMatrixDataView from "../matrix/MatrixGridConfig";
+import { useMemo } from "react";
 
 async function submit(dispatch: any) {
   const { data } = await dispatch(formActions.submitForm());
   console.log(data);
 }
 
-export default function useBaseForm(): FormProps {
+export default function useBaseForm({
+  openDrawer
+}: {
+  openDrawer?: ({ name, type }: { name: string; type: string }) => void;
+} = {}): FormProps {
   const { state, dispatch } = useForm();
 
   function onSubmit() {
     return submit(dispatch);
   }
 
+  const formMatrixDataView = useMemo(
+    () => getMatrixDataView({ data: state.data.formMatrix }),
+    [state.data.formMatrix]
+  );
+
+  const gridMatrixDataView = useMemo(
+    () => getMatrixDataView({ data: state.data.gridMatrix }),
+    [state.data.gridMatrix]
+  );
+
   const fields: FormProps["fields"] = [
+    {
+      name: "formMatrix",
+      type: "matrix",
+      inputSettings: {
+        dataView: formMatrixDataView,
+        buttons: [
+          {
+            label: "Add (Form Matrix)",
+            onClick: () => openDrawer?.({ name: "test", type: "form" }),
+            color: "teal",
+            variant: "text"
+          }
+        ]
+      }
+    },
+    {
+      name: "gridMatrix",
+      type: "matrix",
+      inputSettings: {
+        dataView: gridMatrixDataView,
+        buttons: [
+          {
+            label: "Add (Grid Matrix)",
+            onClick: () => openDrawer?.({ name: "test", type: "grid" }),
+            color: "teal",
+            variant: "text"
+          }
+        ]
+      }
+    },
     {
       name: "foo",
       label: "Foo",

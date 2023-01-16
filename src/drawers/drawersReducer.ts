@@ -7,7 +7,8 @@ export default function reducer(state, action) {
           ...state.drawers,
           {
             name: action.name,
-            id: Date.now()
+            id: Date.now().toString(),
+            type: action.drawerType
           }
         ]
       };
@@ -23,9 +24,10 @@ export default function reducer(state, action) {
   }
 }
 
-function newDrawer({ name }) {
+function newDrawer({ type, name }: { type: string; name: string }) {
   return {
     type: "NEW_DRAWER",
+    drawerType: type,
     name
   };
 }
