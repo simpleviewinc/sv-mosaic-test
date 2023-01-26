@@ -1,9 +1,9 @@
-import { Button, Dialog } from "@simpleview/sv-mosaic";
+import { Button, ButtonProps, Dialog } from "@simpleview/sv-mosaic";
 import React from "react";
 
 export default function () {
   const [open, setOpen] = React.useState(true);
-  const buttons = React.useMemo(
+  const buttons = React.useMemo<ButtonProps[]>(
     () => [
       {
         name: "Close Button",

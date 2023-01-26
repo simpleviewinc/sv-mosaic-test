@@ -2,7 +2,7 @@ import { useReducer, useCallback } from "react";
 import {
   Drawers as MosaicDrawers,
   Button,
-  DrawerHeader
+  DrawerHeader,
 } from "@simpleview/sv-mosaic";
 
 import reducer, { actions } from "./drawersReducer";

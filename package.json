@@ -11,7 +11,7 @@
     "@mui/material": "5.8.7",
     "@mui/styles": "5.6.2",
     "@mui/x-date-pickers": "^5.0.0-beta.0",
-    "@simpleview/sv-mosaic": "14.0.0-staging-ad3498",
+    "@simpleview/sv-mosaic": "15.0.0-staging-d45ed5",
     "date-fns": "2.29.1",
     "i18next": "21.8.11",
     "jsvalidator": "2.0.0",
