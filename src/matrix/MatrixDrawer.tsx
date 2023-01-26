@@ -101,7 +101,7 @@ function GridDrawerContent({ dispatch, onCloseDrawer }) {
     await onCloseDrawer();
   }, [dispatch, checkedRows, onCloseDrawer]);
 
-  const drawerGrid = useMemo(
+  const drawerGrid = useMemo<Parameters<typeof DataView>[0]>(
     () => ({
       display: "list",
       activeColumns: ["id", "title", "description"],
