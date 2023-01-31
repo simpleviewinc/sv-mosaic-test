@@ -24,7 +24,7 @@ export default function reducer(state, action) {
   }
 }
 
-function newDrawer({ type, name }: { type: string; name: string }) {
+function newDrawer({ type, name }: { type?: string; name: string }) {
   return {
     type: "NEW_DRAWER",
     drawerType: type,

@@ -9,6 +9,7 @@ import PlusOne from "@mui/icons-material/PlusOne";
 import AddCircleOutline from "@mui/icons-material/AddCircleOutline";
 import {
   Button,
+  CardProps,
   transform_dateFormat,
   transform_boolean,
   transform_colorPicker
@@ -220,20 +221,24 @@ export default function useSummary() {
    * Card Props
    */
 
-  const topAction = {
-    color: "blue",
-    variant: "icon",
-    onClick: () => alert("topAction Card click"),
-    mIcon: Mood
-  };
+  const topActions: CardProps["topActions"] = [
+    {
+      color: "blue",
+      variant: "icon",
+      onClick: () => alert("topAction Card click"),
+      mIcon: Mood
+    }
+  ];
 
-  const bottomAction = {
-    color: "teal",
-    label: "Add a new task",
-    variant: "text",
-    onClick: () => alert("Add new task clicked"),
-    mIcon: PlusOne
-  };
+  const bottomActions: CardProps["bottomActions"] = [
+    {
+      color: "teal",
+      label: "Add a new task",
+      variant: "text",
+      onClick: () => alert("Add new task clicked"),
+      mIcon: PlusOne
+    }
+  ];
 
   const contentCard = [
     <h1>Card Content Title</h1>,
@@ -286,9 +291,9 @@ export default function useSummary() {
     card: {
       title: "Card Title",
       titleIcon: <Interests />,
-      topAction,
+      topActions,
       content: contentCard,
-      bottomAction
+      bottomActions
     }
   };
 }

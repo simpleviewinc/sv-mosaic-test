@@ -27,7 +27,7 @@ export default function Form() {
         dispatch={args.dispatch}
         closeDrawer={closeDrawer}
       />
-      <MosaicForm {...args} />;
+      <MosaicForm {...args} />
     </>
   );
 }
