@@ -71,6 +71,12 @@ export default function reducer(state, action) {
         skip: 0
       };
     }
+    case "LOADING": {
+      return {
+        ...state,
+        loading: action.key
+      };
+    }
     default: {
       throw new Error("Action does not exist");
     }
@@ -198,8 +204,16 @@ function sort(sort) {
   };
 }
 
+function loading(loading: boolean) {
+	return {
+		type: "LOADING",
+		key: loading
+	};
+}
+
 export const actions = {
   loadData,
+  loading,
   dataLoaded,
   savedView: savedViewAction,
   activeFilters: activeFiltersAction,
@@ -407,6 +421,7 @@ export const initialState = {
   limit: 25,
   skip: 0,
   data: [],
+  loading: true,
   count: 0,
   columns,
   activeColumns: columns.map((c) => c.name),

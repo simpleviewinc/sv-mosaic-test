@@ -1,6 +1,7 @@
 import { FormProps, useForm, formActions } from "@simpleview/sv-mosaic";
 import getMatrixDataView from "../matrix/MatrixGridConfig";
 import { useMemo } from "react";
+import { v4 as uuidV4 } from 'uuid';
 
 async function submit(dispatch: any) {
   const { data } = await dispatch(formActions.submitForm());
@@ -67,9 +68,20 @@ export default function useBaseForm({
       type: "text"
     },
     {
+      name: "bar",
+      label: "Bar",
+      type: "text",
+      defaultValue: "Set value if getFormValues is not defined"
+    },
+    {
       name: "textArea",
       label: "Text Area",
-      type: "textArea"
+      type: "text",
+      inputSettings: {
+        multiline: true,
+        minRows: 2,
+        maxRows: 4
+      }
     },
     {
       name: "number",
@@ -189,7 +201,7 @@ export default function useBaseForm({
       }
     },
     {
-      name: "advanced-selection",
+      name: "advanced_selection",
       label: "Advanced Selection",
       type: "advancedSelection",
       inputSettings: {
@@ -240,6 +252,42 @@ export default function useBaseForm({
             value: "option-10"
           }
         ]
+      }
+    },
+    {
+      name: "upload",
+      label: "Upload",
+      type: "upload",
+      inputSettings: {
+        onFileAdd: async ({ file, onChunkComplete, onUploadComplete, onError }) => {
+          for (let i = 0; i < 10; i++) {
+            await new Promise(resolve => setTimeout(() =>
+                resolve(
+                    onChunkComplete({ percent: (i + 1) * 0.1 })
+                ), 300)
+            );
+          }
+
+          if (Math.random() < 0.3) {
+            await onError("File size exceeded");
+            return;
+          }
+
+          const uploadData: Parameters<typeof onUploadComplete>[0] = {
+            id: uuidV4(),
+            name: file.name,
+            size: `${file.size} bytes`,
+            url: URL.createObjectURL(file)
+          };
+
+          await onUploadComplete(uploadData);
+
+          alert(`Upload complete - uploadData: ${JSON.stringify(uploadData, null, 3)}`);
+        },
+        onFileDelete: ({ id }) => {
+          alert(`DELETED FILE: ${id}`);
+        },
+        limit: 2
       }
     }
   ];
