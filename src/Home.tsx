@@ -24,6 +24,9 @@ export default function Home() {
       <li>
         <Link to="/summary/">Summary</Link>
       </li>
+      <li>
+        <Link to="/spinner/">Spinner</Link>
+      </li>
     </ul>
   );
 }

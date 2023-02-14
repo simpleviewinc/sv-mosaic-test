@@ -14,47 +14,59 @@ const onSavedViewRemove = () => {
 export default function useGrid(): DataViewProps {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const onSavedViewChange = useCallback(
+  const onSavedViewChange = useCallback<NonNullable<DataViewProps["onSavedViewChange"]>>(
     (data) => {
       dispatch(actions.savedView(data));
     },
     [dispatch]
   );
 
-  const onActiveFiltersChange = useCallback(
+  const onActiveFiltersChange = useCallback<NonNullable<DataViewProps["onActiveFiltersChange"]>>(
     ({ activeFilters, filter }) => {
       dispatch(actions.activeFilters({ activeFilters, filter }));
     },
     [dispatch]
   );
 
-  const onLimitChange: DataViewProps["onLimitChange"] = useCallback(
+  const onLimitChange = useCallback<NonNullable<DataViewProps["onLimitChange"]>>(
     ({ limit }: { limit: number }) => {
       dispatch(actions.limit(limit));
     },
     [dispatch]
   );
 
-  const onSkipChange: DataViewProps["onSkipChange"] = useCallback(
+  const onSkipChange = useCallback<NonNullable<DataViewProps["onSkipChange"]>>(
     ({ skip }: { skip: number }) => {
       dispatch(actions.skip(skip));
     },
     [dispatch]
   );
 
-  const onSortChange: DataViewProps["onSortChange"] = useCallback(
+  const onSortChange = useCallback<NonNullable<DataViewProps["onSortChange"]>>(
     (sort) => {
       dispatch(actions.sort(sort));
     },
     [dispatch]
   );
 
-  const onSavedViewGetOptions = () => {
+  const onReorder = useCallback<NonNullable<DataViewProps["onReorder"]>>(
+    (newRows) => {
+      dispatch(actions.loading(true));
+      const rowsSorted = newRows.map((id) => {
+        return state.data.find((row) => row.id === id);
+      })
+      dispatch(actions.dataLoaded({ data: rowsSorted, count: rowsSorted.length }));
+      dispatch(actions.loading(false));
+    },
+    [dispatch, state.data]
+  );
+
+  const onSavedViewGetOptions: NonNullable<DataViewProps["onSavedViewGetOptions"]> = () => {
     return state.views;
   };
 
-  const filters = useMemo(() => {
-    const filters = state.filters.map((val) => {
+  const filters = useMemo<NonNullable<DataViewProps["filters"]>>(() => {
+    const filters = (state.filters as any[]).map((val) => {
       return {
         name: val.name,
         label: val.label,
@@ -70,8 +82,10 @@ export default function useGrid(): DataViewProps {
   }, [state.filters, dispatch]);
 
   useEffect(() => {
+    dispatch(actions.loading(true));
     loadData(state).then((data) => {
       dispatch(actions.dataLoaded(data));
+      dispatch(actions.loading(false));
     });
   }, [state.limit, state.skip, state.sort, state.filter, dispatch]);
 
@@ -88,6 +102,7 @@ export default function useGrid(): DataViewProps {
     activeFilters: state.activeFilters,
     filter: state.filter,
     data: state.data,
+    loading: state.loading,
     primaryActions: state.primaryActions,
     //@ts-expect-error
     views: state.views,
@@ -99,6 +114,7 @@ export default function useGrid(): DataViewProps {
     onSavedViewChange,
     onSavedViewSave,
     onSavedViewGetOptions,
-    onSavedViewRemove
+    onSavedViewRemove,
+    onReorder
   };
 }

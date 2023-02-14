@@ -10,6 +10,7 @@ import Drawers from "./drawers/Drawers";
 import Summary from "./Summary";
 import Dialog from "./Dialog";
 import useDb from "./useDb";
+import Spinner from "./Spinner";
 
 export default function App() {
   useDb();
@@ -27,6 +28,7 @@ export default function App() {
           <Route path="/form_prefill/" element={<FormPrefill />} />
           <Route path="/drawers/" element={<Drawers />} />
           <Route path="/summary/" element={<Summary />} />
+          <Route path="/spinner/" element={<Spinner />} />
         </Routes>
       </div>
     </div>
