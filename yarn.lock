@@ -1912,10 +1912,10 @@
   resolved "https://registry.yarnpkg.com/@rushstack/eslint-patch/-/eslint-patch-1.2.0.tgz#8be36a1f66f3265389e90b5f9c9962146758f728"
   integrity sha512-sXo/qW2/pAcmT43VoRKOJbDOfV3cYpq3szSVfIThQXNt+E4DfKj361vaAt3c88U5tPUxzEswam7GW48PJqtKAg==
 
-"@simpleview/sv-mosaic@16.0.0-staging-db62e4":
-  version "16.0.0-staging-db62e4"
-  resolved "https://registry.yarnpkg.com/@simpleview/sv-mosaic/-/sv-mosaic-16.0.0-staging-db62e4.tgz#ddfac2b98334cbcecfd49df221d540f7c296c83b"
-  integrity sha512-h8s63WSKoDilRsRtnvM73zCJKiRXkt428/8sJC4qHOxDGUnAjdKEGlca/IRUGzEM2G4AP/l2JVppuaCwfQZp2g==
+"@simpleview/sv-mosaic@17.0.0-staging-6a48ef":
+  version "17.0.0-staging-6a48ef"
+  resolved "https://registry.yarnpkg.com/@simpleview/sv-mosaic/-/sv-mosaic-17.0.0-staging-6a48ef.tgz#96303b3ce467d6b1eebbff71052d97e2bbbddf6c"
+  integrity sha512-j+rWb/SqoVYtLT+qWqnwoxQ5wxMPvgSX1mYSFl3LMyszmCBPlzRz6BCNeI3cokJBSaOLo9SvEYgthe2neD0OIw==
   dependencies:
     "@date-io/date-fns" "^2.15.0"
     "@react-google-maps/api" "^2.7.0"

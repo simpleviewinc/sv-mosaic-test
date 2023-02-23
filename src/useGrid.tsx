@@ -1,4 +1,4 @@
-import { useCallback, useReducer, useEffect, useMemo } from "react";
+import { useCallback, useReducer, useEffect, useMemo, useState } from "react";
 import { DataViewProps } from "@simpleview/sv-mosaic";
 
 import reducer, { initialState, actions, loadData } from "./gridReducer";
@@ -89,8 +89,28 @@ export default function useGrid(): DataViewProps {
     });
   }, [state.limit, state.skip, state.sort, state.filter, dispatch]);
 
+	const [checkedState, setCheckedState] = useState<Pick<DataViewProps, "checked" | "checkedAllPages">>({
+		checked: [],
+		checkedAllPages: false
+	});
+
+  useEffect(() => {
+		setCheckedState({
+			...checkedState,
+			checked : state.data.map(val => false)
+		});
+	}, [state.data]);
+
   return {
     title: "DataView Test",
+    checked: checkedState.checked,
+    checkedAllPages: checkedState.checkedAllPages,
+    onCheckChange: (checked) => {
+			setCheckedState((prev) => ({
+				...prev,
+				checked
+			}));
+		},
     count: state.count,
     limit: state.limit,
     skip: state.skip,
