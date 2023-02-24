@@ -266,10 +266,10 @@ for (let index = 1; index < 30; index++) {
   });
 }
 
-const getMultiSelectOptions = () => {
+const getMultiSelectOptions  = ({ limit, skip }: { limit: number; skip: number }) => {
   return {
-    docs: multiSelectOptions,
-    hasMore: false
+    docs: multiSelectOptions.slice(skip, skip + limit),
+    hasMore: multiSelectOptions.length > (skip + limit)
   };
 };
 
