@@ -65,7 +65,10 @@ export default function useBaseForm({
     {
       name: "foo",
       label: "Foo",
-      type: "text"
+      type: "text",
+      inputSettings: {
+        maxCharacters: 40
+      }
     },
     {
       name: "bar",
@@ -302,11 +305,39 @@ export default function useBaseForm({
     }
   ];
 
+  const sections: FormProps["sections"] = useMemo(() => [
+    {
+      title: "Section 1",
+      fields: [[["formMatrix"]], [["gridMatrix"]]]
+    },
+    {
+      title: "Section 2",
+      fields: [[["foo"]], [["bar"]], [["textArea"]], [["date_at"]]]
+    },
+    {
+      title: "Section 3",
+      fields: [[["coords"]], [["addresses"]]]
+    },
+    {
+      title: "Section 4",
+      fields: [
+        [["chip"]],
+        [["dropdown"]],
+        [["toggleSwitch"]],
+        [["radio"]],
+        [["checkbox"]],
+        [["advanced_selection"]],
+        [["upload"]],
+      ]
+    }
+  ], []);
+
   return {
     title: "Form Title",
     state,
     dispatch,
     fields,
-    buttons
+    buttons,
+    sections
   };
 }

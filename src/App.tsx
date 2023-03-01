@@ -3,6 +3,7 @@ import { Link, Routes, Route } from "react-router-dom";
 
 import Home from "./Home";
 import Buttons from "./Buttons";
+import Chips from "./Chips";
 import DataView from "./DataView";
 import Form from "./form/Form";
 import FormPrefill from "./form/FormPrefill";
@@ -22,6 +23,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/buttons/" element={<Buttons />} />
+          <Route path="/chips/" element={<Chips />} />
           <Route path="/dataview/" element={<DataView />} />
           <Route path="/dialog/" element={<Dialog />} />
           <Route path="/form/" element={<Form />} />

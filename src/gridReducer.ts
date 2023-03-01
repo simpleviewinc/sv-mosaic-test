@@ -259,17 +259,17 @@ const getSingleSelectSelected = (id) => {
 };
 
 const multiSelectOptions: MosaicLabelValue[] = [];
-for (let index = 1; index < 16; index++) {
+for (let index = 1; index < 30; index++) {
   multiSelectOptions.push({
     label: `Example ${index}`,
     value: `Example ${index}`
   });
 }
 
-const getMultiSelectOptions = () => {
+const getMultiSelectOptions  = ({ limit, skip }: { limit: number; skip: number }) => {
   return {
-    docs: multiSelectOptions,
-    hasMore: false
+    docs: multiSelectOptions.slice(skip, skip + limit),
+    hasMore: multiSelectOptions.length > (skip + limit)
   };
 };
 
@@ -412,7 +412,8 @@ const filters: Omit<DataViewProps["filters"], "onChange"> = [
     component: DataViewFilterMultiselect,
     args: {
       getSelected: getMultiSelectSelected,
-      getOptions: getMultiSelectOptions
+      getOptions: getMultiSelectOptions,
+      limit: 10
     }
   }
 ];
