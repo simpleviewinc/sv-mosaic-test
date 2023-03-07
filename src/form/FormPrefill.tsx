@@ -70,7 +70,41 @@ export default function Form() {
           label: "Option 6",
           value: "option-6"
         }
-      ]
+      ],
+      number_table: {
+        "2023_02_10": {
+          single: "12",
+          double: "13",
+          queen: "14",
+          king: "15",
+          suite: "16",
+          any: "17",
+        },
+        "2023_02_11": {
+          single: "18",
+          double: "19",
+          queen: "20",
+          king: "21",
+          suite: "22",
+          any: "23",
+        },
+        "2023_02_12": {
+          single: "12",
+          double: "13",
+          queen: "14",
+          king: null,
+          suite: "16",
+          any: "20",
+        },
+        "2023_02_13": {
+          single: "1",
+          double: "1",
+          queen: "1",
+          king: "1",
+          suite: "1",
+          any: "1",
+        },
+      }
     };
   }, []);
 

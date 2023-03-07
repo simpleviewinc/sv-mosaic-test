@@ -3,10 +3,21 @@ import {
   SummaryPageTopComponent,
   SideNav,
   Content,
-  Card
+  Card,
+  SummaryPageTopComponentTypes,
+  SideNavProps,
+  ContentProps,
+  CardProps
 } from "@simpleview/sv-mosaic";
 
-export default function SummaryPage(props) {
+export interface SummaryPageProps {
+  top: SummaryPageTopComponentTypes
+  sideNav: SideNavProps
+  content: ContentProps
+  card: CardProps
+}
+
+export default function SummaryPage(props: SummaryPageProps) {
   return (
     <Fragment>
       <SummaryPageTopComponent {...props.top} />

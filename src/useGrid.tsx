@@ -2,6 +2,7 @@ import { useCallback, useReducer, useEffect, useMemo, useState } from "react";
 import { DataViewProps } from "@simpleview/sv-mosaic";
 
 import reducer, { initialState, actions, loadData } from "./gridReducer";
+import { useNavigate } from "react-router-dom";
 
 const onSavedViewSave = () => {
   alert("Saving a view is not yet supported");
@@ -13,6 +14,11 @@ const onSavedViewRemove = () => {
 
 export default function useGrid(): DataViewProps {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const navigate = useNavigate()
+
+  const onBack = useCallback<NonNullable<DataViewProps["onBack"]>>(() => {
+    navigate(-1)
+  }, [navigate]);
 
   const onSavedViewChange = useCallback<NonNullable<DataViewProps["onSavedViewChange"]>>(
     (data) => {
@@ -135,6 +141,7 @@ export default function useGrid(): DataViewProps {
     onSavedViewSave,
     onSavedViewGetOptions,
     onSavedViewRemove,
-    onReorder
+    onReorder,
+    onBack
   };
 }
