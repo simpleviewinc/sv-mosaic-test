@@ -1,4 +1,4 @@
-import { Button, ButtonRow } from "@simpleview/sv-mosaic";
+import { Button, ButtonRow, H1 } from "@simpleview/sv-mosaic";
 import LinkIcon from "@mui/icons-material/Link";
 
 export default function Buttons() {

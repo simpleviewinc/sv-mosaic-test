@@ -2,7 +2,8 @@ import { useReducer, useCallback } from "react";
 import {
   Drawers as MosaicDrawers,
   Button,
-  DrawerHeader
+  DrawerHeader,
+  ButtonProps
 } from "@simpleview/sv-mosaic";
 
 import reducer, { actions } from "./drawersReducer";
@@ -19,20 +20,24 @@ function OpenDrawerBtn({ onAddNewDrawer }) {
 }
 
 function DrawerContent({ name, id, onAddNewDrawer, onCloseDrawer }) {
-  const buttons = [
+  const buttons: ButtonProps[] = [
     {
-      name: "Red",
       onClick: onCloseDrawer,
       color: "red",
       variant: "contained",
       label: "Red Close"
     },
     {
-      name: "Red",
       onClick: () => alert("This is an alert"),
       color: "blue",
       variant: "contained",
       label: "Blue Alert"
+    },
+    {
+      color: "yellow",
+      variant: "contained",
+      label: "Yellow Tooltip",
+      tooltip: "Tooltip test text"
     }
   ];
   return (

@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import Settings from "@mui/icons-material/Settings";
 import Delete from "@mui/icons-material/Delete";
 import ManageAccounts from "@mui/icons-material/ManageAccounts";
@@ -6,50 +6,38 @@ import Terminal from "@mui/icons-material/Terminal";
 import Interests from "@mui/icons-material/Interests";
 import Mood from "@mui/icons-material/Mood";
 import PlusOne from "@mui/icons-material/PlusOne";
+import Edit from "@mui/icons-material/Edit";
+import ToggleOff from "@mui/icons-material/ToggleOff";
+import ToggleOn from "@mui/icons-material/ToggleOn";
 import AddCircleOutline from "@mui/icons-material/AddCircleOutline";
 import {
   Button,
   CardProps,
+  DataViewColumnTransform,
   transform_dateFormat,
   transform_boolean,
-  transform_colorPicker
+  transform_colorPicker,
+  SummaryPageTopComponentTypes,
+  SideNavProps,
+  ContentProps,
 } from "@simpleview/sv-mosaic";
 import Home from "@mui/icons-material/Home";
 
-const transform_text = () => {
+import { SummaryPageProps } from "./SummaryPage";
+import { useNavigate } from "react-router-dom";
+
+const transform_text = (): DataViewColumnTransform<string> => {
   return ({ data }) => data;
 };
 
-export default function useSummary() {
+export default function useSummary(): SummaryPageProps {
   /**
    * SummaryPageTopComponent Props
    */
-  const options = [
-    { label: "Option A", value: "a" },
-    { label: "Option B", value: "b" },
-    { label: "Option C", value: "c" },
-    { label: "Option D", value: "d" }
-  ];
-
-  const getOptions = () => {
-    return {
-      docs: options,
-      hasMore: false
-    };
-  };
-
-  const getSelected = (id) => {
-    return options.filter((val) => val.value === id)[0];
-  };
-
-  const filter = {
-    label: "Test Filter",
-    args: { getOptions, getSelected, required: false }
-  };
-
   const [checked, setChecked] = useState<boolean>(false);
+  const navigate = useNavigate();
 
-  const favorite = {
+  const favorite: SummaryPageTopComponentTypes["favorite"] = {
     checked,
     onClick: (val) => {
       alert(`Star changed to ${val ? "checked" : "unchecked"}`);
@@ -57,7 +45,7 @@ export default function useSummary() {
     }
   };
 
-  const mainActions = [
+  const mainActions: SummaryPageTopComponentTypes["mainActions"] = [
     {
       label: "Button 1",
       mIcon: Settings,
@@ -81,7 +69,7 @@ export default function useSummary() {
     }
   ];
 
-  const additionalActions = [
+  const additionalActions: SummaryPageTopComponentTypes["additionalActions"] = [
     {
       label: "Test",
       onClick: () => alert("Test Click")
@@ -92,7 +80,7 @@ export default function useSummary() {
     }
   ];
 
-  const descriptionItems = [
+  const descriptionItems: SummaryPageTopComponentTypes["descriptionItems"] = [
     <h5 key={1}>A description</h5>,
     <h5 key={2}>Test description</h5>,
     <Button
@@ -112,47 +100,59 @@ export default function useSummary() {
     />
   ];
 
+  const onBack = useCallback<NonNullable<SummaryPageTopComponentTypes["onBack"]>>(() => {
+    navigate(-1);
+  }, [navigate]);
+
   /**
    * SideNav Props
    */
-
-  const items = [
+  const items: SideNavProps["items"] = [
     [
       {
         label: "Home",
+        name: "home",
         icon: Home
       },
       {
         label: "Accounts",
+        name: "accounts",
         icon: ManageAccounts
       },
       {
-        label: "Gallery"
+        label: "Gallery",
+        name: "gallety"
       },
       {
-        label: "Visitors"
+        label: "Visitors",
+        name: "visitors"
       },
       {
-        label: "Sitemap"
+        label: "Sitemap",
+        name: "sitemap"
       }
     ],
     [
       {
         label: "Assets",
+        name: "assets",
         onNav: () => alert("Assets")
       },
       {
         label: "Map Publisher",
+        name: "map_publisher",
         onNav: () => alert("Map Publisher")
       },
       {
         label: "Dynamic Content",
+        name: "dynamic_content",
         onNav: () => alert("Dynamic Content")
       }
     ],
     [
       {
         label: "Tasks",
+        name: "tasks",
         badge: "99",
         onNav: () => alert("Tasks"),
         action: {
@@ -162,10 +162,12 @@ export default function useSummary() {
       },
       {
         label: "Documents",
+        name: "documents",
         onNav: () => alert("Documents")
       },
       {
         label: "Notes",
+        name: "notes",
         badge: "1",
         onNav: () => alert("Notes")
       }
@@ -175,47 +177,65 @@ export default function useSummary() {
   /**
    * Content Props
    */
+  const [variant, setVariant] = useState<NonNullable<ContentProps["variant"]>>("card");
 
-  const fieldDef = [
+  const fields: ContentProps["fields"] = [
+    {
+      name: "content_variant",
+      label: `Content variant`
+    },
     {
       name: "text",
-      label: "Text",
-      transforms: [transform_text()]
+      label: <b>Text</b>,
+      transforms: [transform_text() as DataViewColumnTransform]
     },
     {
       name: "date",
       label: "Date",
-      transforms: [transform_dateFormat()]
+      transforms: [transform_dateFormat() as DataViewColumnTransform]
     },
     {
       name: "boolean",
       label: "Boolean",
-      transforms: [transform_boolean()]
+      transforms: [transform_boolean() as DataViewColumnTransform]
     },
     {
       name: "color",
       label: "Color",
-      transforms: [transform_colorPicker()]
+      transforms: [transform_colorPicker() as DataViewColumnTransform]
     }
   ];
 
-  const sections = [
-    [["text"], ["boolean"]],
+  const sections: ContentProps["sections"] = [
+    [["content_variant"], ["text"], ["boolean"]],
     [["date"], ["color"]]
   ];
 
-  const values = {
+  const data: ContentProps["data"] = useMemo(() => ({
+    content_variant: variant,
     text: "This is a text",
     date: new Date("April 22, 1998 09:00:00"),
     boolean: true,
     color: "#008000"
-  };
+  }), [variant]);
 
-  const getValues = useCallback(async function () {
-    return values;
-  }, []);
-
-  const onEdit = () => alert("Edit button clicked");
+  const buttons: ContentProps["buttons"] = useMemo(() => [
+    {
+      name: "edit",
+      mIcon: Edit,
+      color: "gray",
+      variant: "icon",
+      onClick: () => alert("Edit button clicked")
+    },
+    {
+      name: "toggle_variant",
+      mIcon: variant === "card" ? ToggleOff : ToggleOn,
+      color: "gray",
+      variant: "icon",
+      tooltip: `Toggle the card variant(card or standard), current: ${variant}`,
+      onClick: () => setVariant(variant === "standard" ? "card" : "standard")
+    }
+  ], [variant]);
 
   /**
    * Card Props
@@ -240,7 +260,7 @@ export default function useSummary() {
     }
   ];
 
-  const contentCard = [
+  const contentCard: CardProps["content"] = [
     <h1>Card Content Title</h1>,
     <h3>Sub title</h3>,
     <div>
@@ -268,10 +288,10 @@ export default function useSummary() {
 
   return {
     top: {
+      onBack,
       title: "Summary Title",
       img:
         "https://i.pinimg.com/474x/7b/90/a8/7b90a80aa5b93b640d9b84b73559332e.jpg",
-      filter,
       favorite,
       mainActions,
       additionalActions,
@@ -282,15 +302,16 @@ export default function useSummary() {
       onNav: ({ item }) => alert("Global on nav handler for: " + item.label)
     },
     content: {
+      variant: variant,
       title: "Content Title",
-      fieldDef,
+      fields,
       sections,
-      getValues,
-      onEdit
+      data,
+      buttons
     },
     card: {
       title: "Card Title",
-      titleIcon: <Interests />,
+      titleIcon: Interests,
       topActions,
       content: contentCard,
       bottomActions
