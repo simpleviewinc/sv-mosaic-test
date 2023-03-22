@@ -10,6 +10,7 @@ import Add from "@mui/icons-material/Add";
 import Edit from "@mui/icons-material/Edit";
 import Delete from "@mui/icons-material/Delete";
 
+// @ts-expect-error
 import localStorageDB from "localstoragedb";
 const database = new localStorageDB("new_docs", localStorage);
 

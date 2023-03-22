@@ -71,6 +71,7 @@ export default function Form() {
           value: "option-6"
         }
       ],
+      phone: "12025550107",
       number_table: {
         "2023_02_10": {
           single: "12",
