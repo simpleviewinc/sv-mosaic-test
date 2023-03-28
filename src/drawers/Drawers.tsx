@@ -2,7 +2,7 @@ import { useReducer, useCallback } from "react";
 import {
   Drawers as MosaicDrawers,
   Button,
-  DrawerHeader,
+  PageHeader,
   ButtonProps
 } from "@simpleview/sv-mosaic";
 
@@ -42,7 +42,7 @@ function DrawerContent({ name, id, onAddNewDrawer, onCloseDrawer }) {
   ];
   return (
     <div className="drawerContent--container">
-      <DrawerHeader title="Header" onCancel={onCloseDrawer} buttons={buttons} />
+      <PageHeader title="Header" onBack={onCloseDrawer} buttons={buttons} />
       <h3>Drawer - {id}</h3>
       <p>Name: {name}</p>
       <OpenDrawerBtn onAddNewDrawer={onAddNewDrawer} />

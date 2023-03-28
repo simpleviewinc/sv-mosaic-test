@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { db } from "./db";
+// @ts-expect-error
 import localStorageDB from "localstoragedb";
 const database = new localStorageDB("new_docs", localStorage);
 

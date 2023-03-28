@@ -281,6 +281,12 @@ export default function useBaseForm({
       }
     },
     {
+      name: "phone",
+      label: "Phone",
+      disabled,
+      type: "phone"
+    },
+    {
       name: "upload",
       label: "Upload",
       type: "upload",
@@ -384,6 +390,7 @@ export default function useBaseForm({
         [["radio"]],
         [["checkbox"]],
         [["advanced_selection"]],
+        [["phone"]],
         [["upload"]],
         [["number_table"]],
       ]

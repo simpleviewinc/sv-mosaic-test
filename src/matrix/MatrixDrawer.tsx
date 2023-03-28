@@ -3,7 +3,7 @@ import {
   Drawers as MosaicDrawers,
   Form as MosaicForm,
   formActions,
-  DrawerHeader,
+  PageHeader,
   DataView
 } from "@simpleview/sv-mosaic";
 import Delete from "@mui/icons-material/Delete";
@@ -65,7 +65,6 @@ function FormDrawerContent({ id, onCloseDrawer, state, dispatch }) {
         }
       ]}
       dispatch={dispatch}
-      type="drawer"
     />
   );
 }
@@ -151,7 +150,7 @@ function GridDrawerContent({ dispatch, onCloseDrawer }) {
 
   return (
     <>
-      <DrawerHeader
+      <PageHeader
         title="Matrix Grid Variant"
         buttons={[
           {
