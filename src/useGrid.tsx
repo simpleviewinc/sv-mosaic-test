@@ -14,27 +14,33 @@ const onSavedViewRemove = () => {
 
 export default function useGrid(): DataViewProps {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const onBack = useCallback<NonNullable<DataViewProps["onBack"]>>(() => {
-    navigate(-1)
+    navigate(-1);
   }, [navigate]);
 
-  const onSavedViewChange = useCallback<NonNullable<DataViewProps["onSavedViewChange"]>>(
+  const onSavedViewChange = useCallback<
+    NonNullable<DataViewProps["onSavedViewChange"]>
+  >(
     (data) => {
       dispatch(actions.savedView(data));
     },
     [dispatch]
   );
 
-  const onActiveFiltersChange = useCallback<NonNullable<DataViewProps["onActiveFiltersChange"]>>(
+  const onActiveFiltersChange = useCallback<
+    NonNullable<DataViewProps["onActiveFiltersChange"]>
+  >(
     ({ activeFilters, filter }) => {
       dispatch(actions.activeFilters({ activeFilters, filter }));
     },
     [dispatch]
   );
 
-  const onLimitChange = useCallback<NonNullable<DataViewProps["onLimitChange"]>>(
+  const onLimitChange = useCallback<
+    NonNullable<DataViewProps["onLimitChange"]>
+  >(
     ({ limit }: { limit: number }) => {
       dispatch(actions.limit(limit));
     },
@@ -60,16 +66,28 @@ export default function useGrid(): DataViewProps {
       dispatch(actions.loading(true));
       const rowsSorted = newRows.map((id) => {
         return state.data.find((row) => row.id === id);
-      })
-      dispatch(actions.dataLoaded({ data: rowsSorted, count: rowsSorted.length }));
+      });
+      dispatch(
+        actions.dataLoaded({ data: rowsSorted, count: rowsSorted.length })
+      );
       dispatch(actions.loading(false));
     },
     [dispatch, state.data]
   );
 
-  const onSavedViewGetOptions: NonNullable<DataViewProps["onSavedViewGetOptions"]> = () => {
+  const onSavedViewGetOptions: NonNullable<
+    DataViewProps["onSavedViewGetOptions"]
+  > = () => {
     return state.views;
   };
+
+  const additionalActions: DataViewProps["additionalActions"] = [
+    {
+      name: "more",
+      label: "More",
+      onClick: () => alert("clicked!")
+    }
+  ];
 
   const filters = useMemo<NonNullable<DataViewProps["filters"]>>(() => {
     const filters = (state.filters as any[]).map((val) => {
@@ -95,28 +113,30 @@ export default function useGrid(): DataViewProps {
     });
   }, [state.limit, state.skip, state.sort, state.filter, dispatch]);
 
-	const [checkedState, setCheckedState] = useState<Pick<DataViewProps, "checked" | "checkedAllPages">>({
-		checked: [],
-		checkedAllPages: false
-	});
+  const [checkedState, setCheckedState] = useState<
+    Pick<DataViewProps, "checked" | "checkedAllPages">
+  >({
+    checked: [],
+    checkedAllPages: false
+  });
 
   useEffect(() => {
-		setCheckedState({
-			...checkedState,
-			checked : state.data.map(val => false)
-		});
-	}, [state.data]);
+    setCheckedState({
+      ...checkedState,
+      checked: state.data.map((val) => false)
+    });
+  }, [state.data]);
 
   return {
     title: "DataView Test",
     checked: checkedState.checked,
     checkedAllPages: checkedState.checkedAllPages,
     onCheckChange: (checked) => {
-			setCheckedState((prev) => ({
-				...prev,
-				checked
-			}));
-		},
+      setCheckedState((prev) => ({
+        ...prev,
+        checked
+      }));
+    },
     count: state.count,
     limit: state.limit,
     skip: state.skip,
@@ -133,6 +153,7 @@ export default function useGrid(): DataViewProps {
     //@ts-expect-error
     views: state.views,
     savedView: state.savedView,
+    additionalActions,
     onLimitChange,
     onSkipChange,
     onSortChange,
