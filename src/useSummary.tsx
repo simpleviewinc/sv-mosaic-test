@@ -19,7 +19,7 @@ import {
   transform_colorPicker,
   SummaryPageTopComponentTypes,
   SideNavProps,
-  ContentProps,
+  ContentProps
 } from "@simpleview/sv-mosaic";
 import Home from "@mui/icons-material/Home";
 
@@ -100,7 +100,9 @@ export default function useSummary(): SummaryPageProps {
     />
   ];
 
-  const onBack = useCallback<NonNullable<SummaryPageTopComponentTypes["onBack"]>>(() => {
+  const onBack = useCallback<
+    NonNullable<SummaryPageTopComponentTypes["onBack"]>
+  >(() => {
     navigate(-1);
   }, [navigate]);
 
@@ -177,7 +179,9 @@ export default function useSummary(): SummaryPageProps {
   /**
    * Content Props
    */
-  const [variant, setVariant] = useState<NonNullable<ContentProps["variant"]>>("card");
+  const [variant, setVariant] = useState<NonNullable<ContentProps["variant"]>>(
+    "card"
+  );
 
   const fields: ContentProps["fields"] = [
     {
@@ -211,31 +215,48 @@ export default function useSummary(): SummaryPageProps {
     [["date"], ["color"]]
   ];
 
-  const data: ContentProps["data"] = useMemo(() => ({
-    content_variant: variant,
-    text: "This is a text",
-    date: new Date("April 22, 1998 09:00:00"),
-    boolean: true,
-    color: "#008000"
-  }), [variant]);
+  const data: ContentProps["data"] = useMemo(
+    () => ({
+      content_variant: variant,
+      text: "This is a text",
+      date: new Date("April 22, 1998 09:00:00"),
+      boolean: true,
+      color: "#008000"
+    }),
+    [variant]
+  );
 
-  const buttons: ContentProps["buttons"] = useMemo(() => [
-    {
-      name: "edit",
-      mIcon: Edit,
-      color: "gray",
-      variant: "icon",
-      onClick: () => alert("Edit button clicked")
-    },
-    {
-      name: "toggle_variant",
-      mIcon: variant === "card" ? ToggleOff : ToggleOn,
-      color: "gray",
-      variant: "icon",
-      tooltip: `Toggle the card variant(card or standard), current: ${variant}`,
-      onClick: () => setVariant(variant === "standard" ? "card" : "standard")
-    }
-  ], [variant]);
+  const buttons: ContentProps["buttons"] = useMemo(
+    () => [
+      {
+        name: "edit",
+        mIcon: Edit,
+        color: "gray",
+        variant: "icon",
+        onClick: () => alert("Edit button clicked")
+      },
+      {
+        name: "toggle_variant",
+        mIcon: variant === "card" ? ToggleOff : ToggleOn,
+        color: "gray",
+        variant: "icon",
+        tooltip: `Toggle the card variant(card or standard), current: ${variant}`,
+        onClick: () => setVariant(variant === "standard" ? "card" : "standard")
+      },
+      {
+        name: "show",
+        mIcon: Edit,
+        color: "gray",
+        variant: "icon",
+        tooltip: `Testing to see if show prop works`,
+        onClick: () => alert("clicked!"),
+        show: () => {
+          return Math.round(Math.random()) === 1 ? true : false;
+        }
+      }
+    ],
+    [variant]
+  );
 
   /**
    * Card Props
