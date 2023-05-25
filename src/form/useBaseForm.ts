@@ -346,7 +346,8 @@ export default function useBaseForm({
           { name: "king", title: "King" },
           { name: "suite", title: "Suite" },
           { name: "any", title: "Any" }
-        ]
+        ],
+        numberFormatOptions: {}
       }
     }
   ], [disabled]);
@@ -368,8 +369,9 @@ export default function useBaseForm({
     }
   ];
 
-  const sections: FormProps["sections"] = useMemo(() => [
+  const sections = useMemo<FormProps["sections"]>(() => [
     {
+      collapsed: true,
       title: "Section 1",
       fields: [[["formMatrix"]], [["gridMatrix"]]]
     },

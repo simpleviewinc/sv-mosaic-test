@@ -1,5 +1,5 @@
 import { Form as MosaicForm } from "@simpleview/sv-mosaic";
-import { FieldDef } from "@simpleview/sv-mosaic/components/Field";
+import { FieldDef } from "@simpleview/sv-mosaic";
 import { useCallback } from "react";
 
 import useBaseForm from "./useBaseForm";
